@@ -40,7 +40,7 @@ class StorageRegistry
      * @throws StorageRegistryException
      */
     public function getStorageByIdentifier($identifier): StorageInterface {
-        if (isset($this->registeredStorageServicesByIdentifiers[$identifier])) {
+        if (!isset($this->registeredStorageServicesByIdentifiers[$identifier])) {
             throw new StorageRegistryException("Storage {$identifier} has not been found!");
         }
 
@@ -53,7 +53,7 @@ class StorageRegistry
      * @throws StorageRegistryException
      */
     public function getStorageByClass($class): StorageInterface {
-        if (isset($this->registeredStorageServicesByClass[$class])) {
+        if (!isset($this->registeredStorageServicesByClass[$class])) {
             throw new StorageRegistryException("Storage {$class} has not been found!");
         }
 
