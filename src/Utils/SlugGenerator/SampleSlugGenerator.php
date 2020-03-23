@@ -2,6 +2,7 @@
 
 namespace Pfcode\AttachmentStorage\Utils\SlugGenerator;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use Pfcode\AttachmentStorage\Entity\AttachmentInterface;
 
@@ -22,12 +23,13 @@ class SampleSlugGenerator implements SlugGeneratorInterface
 
     /**
      * SampleSlugGenerator constructor.
-     * @param ObjectRepository $repository
+     * @param EntityManagerInterface $em
+     * @param string $entityClass
      * @param string $slugColumn
      * @param string $slugLength
      */
-    public function __construct(ObjectRepository $repository, string $slugColumn = self::DEFAULT_SLUG_COLUMN, string $slugLength = self::DEFAULT_LENGTH) {
-        $this->repository = $repository;
+    public function __construct(EntityManagerInterface $em, string $entityClass, string $slugColumn = self::DEFAULT_SLUG_COLUMN, string $slugLength = self::DEFAULT_LENGTH) {
+        $this->repository = $em->getRepository($entityClass);
         $this->slugLength = $slugLength;
         $this->slugColumn = $slugColumn;
     }

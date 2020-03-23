@@ -22,9 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Pfcode\AttachmentStorage\Entity\AttachmentInterface;
 
 /**
- * Class MyAttachment
- * @package Pfcode\AttachmentStorage
- * @ORM\Entity(repositoryClass="App\Repository\MyAttachmentRepository")
+ * @ORM\Entity()
  */
 class MyAttachment implements AttachmentInterface
 {
@@ -130,19 +128,6 @@ class MyAttachment implements AttachmentInterface
 }
 ```
 
-Remember to create a repository for this entity! Here's a dummy implementation for `MyAttachment` sample:
-```php
-<?php
-
-namespace App\Repository;
-
-use Doctrine\ORM\EntityRepository;
-
-class MyAttachmentRepository extends EntityRepository {
-
-}
-```
-
 Then, you should register a few services in your `config/services.yml` file:
 ```yaml
 # Implementation of a simple storage service that uses directory on a local machine that is accessible publicly by URL
@@ -175,10 +160,12 @@ Pfcode\AttachmentStorage\Utils\AttachmentDescriber:
 Pfcode\AttachmentStorage\Utils\ExtensionSuggester:
     public: true
     
-# Sample service used to generate a slug for new uploaded attachments 
-Pfcode\AttachmentStorage\Utils\SlugGenerator\SampleSlugGenerator:
+# Sample service used to generate a slug for new uploaded attachments
+  Pfcode\AttachmentStorage\Utils\SlugGenerator\SampleSlugGenerator:
     public: true
-    arguments: ['@App\Repository\MyAttachmentRepository']
+    arguments: ['@doctrine.orm.default_entity_manager']
+    bind:
+      $entityClass: 'App\Entity\Attachment'
 
 # Service used to upload new attachments
 Pfcode\AttachmentStorage\Uploader\AttachmentUploader:
@@ -186,11 +173,8 @@ Pfcode\AttachmentStorage\Uploader\AttachmentUploader:
     arguments: [
       '@Pfcode\AttachmentStorage\StorageRegistry\StorageRegistry', 
       '@Pfcode\AttachmentStorage\Utils\ExtensionSuggester',
-      # Service implementing Pfcode\AttachmentStorage\Utils\SlugGenerator\SlugGeneratorInterface
       '@Pfcode\AttachmentStorage\Utils\SlugGenerator\SampleSlugGenerator',
-      # Service implementing Pfcode\AttachmentStorage\Utils\Downloader\DownloaderInterface
-      '@Pfcode\AttachmentStorage\Utils\Downloader\CurlDownloader'
-    ]
+      '@Pfcode\AttachmentStorage\Utils\Downloader\CurlDownloader']
     bind:
       # Specify class of entity that implements AttachmentInterface.
       # Warning! This is not a service! Just a string with Fully Qualified Class Name
