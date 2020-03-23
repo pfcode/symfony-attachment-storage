@@ -49,8 +49,9 @@ class AttachmentUploader
         $this->entityClass = $entityClass;
         $this->downloader = $downloader;
 
-        if (!($entityClass instanceof AttachmentInterface)) {
-            throw new LogicException('AttachmentRepository needs a valid Attachment entity class that implements AttachmentInterface!');
+        $entityInterfaces = class_implements($entityClass);
+        if (!isset($entityInterfaces[AttachmentInterface::class])) {
+            throw new LogicException('AttachmentUploader needs valid entity class that implements AttachmentInterface!');
         }
     }
 
@@ -81,7 +82,8 @@ class AttachmentUploader
         }
 
         /** @var AttachmentInterface $attachment */
-        $attachment = new ($this->entityClass)();
+        $className = $this->entityClass;
+        $attachment = new $className;
         $attachment->setMimeType($mimeType);
         $attachment->setExtension($extension);
         $attachment->setFileSize(filesize($path));
@@ -142,7 +144,8 @@ class AttachmentUploader
      */
     public function uploadFromBlob(string $blob, ?string $slug = null, ?string $extension = null, ?StorageInterface $storage = null): AttachmentInterface {
         /** @var AttachmentInterface $attachment */
-        $attachment = new ($this->entityClass)();
+        $className = $this->entityClass;
+        $attachment = new $className;
         $attachment->setExtension($extension);
         $attachment->setFileSize(strlen($blob));
 
