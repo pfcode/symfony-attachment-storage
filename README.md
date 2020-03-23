@@ -165,7 +165,7 @@ Pfcode\AttachmentStorage\Utils\ExtensionSuggester:
     public: true
     arguments: ['@doctrine.orm.default_entity_manager']
     bind:
-      $entityClass: 'App\Entity\Attachment'
+      $entityClass: 'App\Entity\MyAttachment'
 
 # Service used to upload new attachments
 Pfcode\AttachmentStorage\Uploader\AttachmentUploader:
