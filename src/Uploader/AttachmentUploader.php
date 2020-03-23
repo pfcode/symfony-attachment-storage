@@ -1,16 +1,15 @@
 <?php
 
 
-namespace Pfcode\Uploader\AttachmentStorage;
+namespace Pfcode\AttachmentStorage\Uploader;
 
 
 use LogicException;
 use Pfcode\AttachmentStorage\Entity\AttachmentInterface;
-use Pfcode\AttachmentStorage\Registry\StorageRegistry;
-use Pfcode\AttachmentStorage\Registry\StorageRegistryException;
 use Pfcode\AttachmentStorage\Storage\StorageException;
 use Pfcode\AttachmentStorage\Storage\StorageInterface;
-use Pfcode\AttachmentStorage\UploaderException;
+use Pfcode\AttachmentStorage\StorageRegistry\StorageRegistry;
+use Pfcode\AttachmentStorage\StorageRegistry\StorageRegistryException;
 use Pfcode\AttachmentStorage\Utils\Downloader\DownloaderException;
 use Pfcode\AttachmentStorage\Utils\Downloader\DownloaderInterface;
 use Pfcode\AttachmentStorage\Utils\ExtensionSuggester;

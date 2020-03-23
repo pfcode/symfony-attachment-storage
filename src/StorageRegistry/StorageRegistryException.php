@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Pfcode\AttachmentStorage\Registry;
+namespace Pfcode\AttachmentStorage\StorageRegistry;
 
 
 use Pfcode\AttachmentStorage\AttachmentStorageException;
