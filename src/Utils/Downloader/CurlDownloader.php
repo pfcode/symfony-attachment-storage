@@ -10,18 +10,13 @@ class CurlDownloader implements DownloaderInterface
      * @inheritDoc
      */
     public function downloadFromUrlToTemporaryFile(string $url, bool $unsafeSSL = false, int $maxDownloadSize = 0, int $timeout = 5): string {
-        $tmpFile = tmpfile();
-        if ($tmpFile === false) {
-            return null;
-        }
-
-        $tmpFileName = stream_get_meta_data($tmpFile);
-        $tmpFileName = $tmpFileName['uri'] ?? null;
+        $tmpFileName = tempnam(sys_get_temp_dir(), '_curl_');
         if ($tmpFileName === null) {
-            @unlink($tmpFile);
+            @unlink($tmpFileName);
             throw new DownloaderException('Failed to create temporary file!');
         }
 
+        $tmpFile = fopen($tmpFileName, 'wb+');
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_TIMEOUT, $timeout);
         curl_setopt($curl, CURLOPT_FILE, $tmpFile);
@@ -47,6 +42,12 @@ class CurlDownloader implements DownloaderInterface
 
         curl_exec($curl);
         curl_close($curl);
+
+        fclose($tmpFile);
+
+        register_shutdown_function(function() use($tmpFileName) {
+            @unlink($tmpFileName);
+        });
 
         if (!file_exists($tmpFileName)) {
             throw new DownloaderException('Failed to download a file!');
