@@ -1,13 +1,17 @@
 <?php
 
 
-namespace Pfcode\AttachmentStorage;
+namespace Pfcode\Uploader\AttachmentStorage;
 
 
 use LogicException;
 use Pfcode\AttachmentStorage\Entity\AttachmentInterface;
 use Pfcode\AttachmentStorage\Registry\StorageRegistry;
+use Pfcode\AttachmentStorage\Registry\StorageRegistryException;
+use Pfcode\AttachmentStorage\Storage\StorageException;
 use Pfcode\AttachmentStorage\Storage\StorageInterface;
+use Pfcode\AttachmentStorage\UploaderException;
+use Pfcode\AttachmentStorage\Utils\Downloader\DownloaderException;
 use Pfcode\AttachmentStorage\Utils\Downloader\DownloaderInterface;
 use Pfcode\AttachmentStorage\Utils\ExtensionSuggester;
 use Pfcode\AttachmentStorage\Utils\SlugGenerator\SlugGeneratorInterface;
@@ -57,7 +61,7 @@ class AttachmentUploader
      * @param string|null $extension
      * @param StorageInterface|null $storage
      * @return AttachmentInterface
-     * @throws Storage\StorageException
+     * @throws StorageException
      * @throws UploaderException
      */
     public function uploadFromPath(string $path, ?string $slug = null, ?string $extension = null, ?StorageInterface $storage = null): AttachmentInterface {
@@ -105,9 +109,9 @@ class AttachmentUploader
      * @param string|null $extension
      * @param StorageInterface|null $storage
      * @return AttachmentInterface
-     * @throws Utils\Downloader\DownloaderException
+     * @throws StorageException
      * @throws UploaderException
-     * @throws Storage\StorageException
+     * @throws DownloaderException
      */
     public function uploadFromURL(string $url, ?string $slug = null, ?string $extension = null, ?StorageInterface $storage = null): AttachmentInterface {
         $path = $this->downloader->downloadFromUrlToTemporaryFile($url);
@@ -120,7 +124,8 @@ class AttachmentUploader
      * @param string|null $extension
      * @param StorageInterface|null $storage
      * @return AttachmentInterface
-     * @throws AttachmentStorageException
+     * @throws StorageException
+     * @throws UploaderException
      */
     public function uploadFromUploadedFile(UploadedFile $uploadedFile, ?string $slug = null, ?string $extension = null, ?StorageInterface $storage = null): AttachmentInterface {
         $attachment = $this->uploadFromPath($uploadedFile->getRealPath(), $slug, $extension, $storage);
@@ -134,7 +139,7 @@ class AttachmentUploader
      * @param string|null $extension
      * @param StorageInterface|null $storage
      * @return AttachmentInterface
-     * @throws Storage\StorageException
+     * @throws StorageException
      */
     public function uploadFromBlob(string $blob, ?string $slug = null, ?string $extension = null, ?StorageInterface $storage = null): AttachmentInterface {
         /** @var AttachmentInterface $attachment */
@@ -162,7 +167,7 @@ class AttachmentUploader
      * @param AttachmentInterface $attachment
      * @return StorageInterface
      * @throws UploaderException
-     * @throws Registry\StorageRegistryException
+     * @throws StorageRegistryException
      */
     public function getStorageOfAttachment(AttachmentInterface $attachment): StorageInterface {
         $storage = $this->storageRegistry->getStorageByIdentifier($attachment->getStorageIdentifier());
