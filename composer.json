@@ -1,0 +1,26 @@
+{
+  "name": "pfcode/symfony-attachment-storage",
+  "description": "Attachment storage abstraction layer for Doctrine ORM",
+  "type": "library",
+  "require": {
+    "php": ">=7.1",
+    "ext-curl": "*",
+    "ext-fileinfo": "*",
+    "ralouphie/mimey": "^2.1",
+    "doctrine/orm": "^2.7",
+    "symfony/http-foundation": "^5.0"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Paweł Firlej",
+      "email": "mail@pfco.de"
+    }
+  ],
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "Pfcode\\AttachmentStorage\\": "src/"
+    }
+  }
+}
