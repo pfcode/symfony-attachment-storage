@@ -19,19 +19,19 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class AttachmentUploader
 {
     /** @var StorageRegistry */
-    private $storageRegistry;
+    protected $storageRegistry;
 
     /** @var string */
-    private $entityClass;
+    protected $entityClass;
 
     /** @var ExtensionSuggester */
-    private $extensionSuggester;
+    protected $extensionSuggester;
 
     /** @var SlugGeneratorInterface */
-    private $slugGenerator;
+    protected $slugGenerator;
 
     /** @var DownloaderInterface */
-    private $downloader;
+    protected $downloader;
 
     /**
      * AttachmentRepository constructor.

@@ -13,13 +13,13 @@ class SampleSlugGenerator implements SlugGeneratorInterface
     public const MAX_DUPLICATION_CHECKS = 10;
 
     /** @var ObjectRepository */
-    private $repository;
+    protected $repository;
 
     /** @var int */
-    private $slugLength;
+    protected $slugLength;
 
     /** @var string */
-    private $slugColumn;
+    protected $slugColumn;
 
     /**
      * SampleSlugGenerator constructor.
@@ -61,7 +61,7 @@ class SampleSlugGenerator implements SlugGeneratorInterface
      * @return string
      * @throws SlugGeneratorException
      */
-    private function randomAlphanumericString($length): string {
+    protected function randomAlphanumericString($length): string {
         $allowedCharacters = '0123456789abcdefghijklmnopqrstuvwxyz';
         $repeats = max(ceil($length / strlen($allowedCharacters)), 1);
         $str = substr(str_shuffle(str_repeat($allowedCharacters, $repeats)), 0, $length);

@@ -11,11 +11,11 @@ class LocalStorage implements StorageInterface
     /**
      * @var string
      */
-    private $absolutePath;
+    protected $absolutePath;
     /**
      * @var string
      */
-    private $baseUrl;
+    protected $baseUrl;
 
     /**
      * LocalStorage constructor.
@@ -156,7 +156,7 @@ class LocalStorage implements StorageInterface
      * @param AttachmentInterface $attachment
      * @return string
      */
-    private function getAttachmentFileName(AttachmentInterface $attachment): ?string {
+    protected function getAttachmentFileName(AttachmentInterface $attachment): ?string {
         $ext = trim($attachment->getExtension());
         $slug = trim($attachment->getSlug());
 
@@ -175,7 +175,7 @@ class LocalStorage implements StorageInterface
      * @param string $path
      * @param AttachmentInterface $attachment
      */
-    private function updateAttachmentInfo(string $path, AttachmentInterface $attachment): void {
+    protected function updateAttachmentInfo(string $path, AttachmentInterface $attachment): void {
         $attachment->setFileSize((int)filesize($path));
         $attachment->setMimeType(mime_content_type($path));
         $attachment->setStorageIdentifier($this->getStorageIdentifier());

@@ -8,13 +8,13 @@ use Pfcode\AttachmentStorage\Storage\StorageInterface;
 class StorageRegistry
 {
     /** @var StorageInterface[] */
-    private $registeredStorageServicesByClass = [];
+    protected $registeredStorageServicesByClass = [];
 
     /** @var StorageInterface[] */
-    private $registeredStorageServicesByIdentifiers = [];
+    protected $registeredStorageServicesByIdentifiers = [];
 
     /** @var StorageInterface|null */
-    private $defaultStorage;
+    protected $defaultStorage;
 
     /**
      * @param StorageInterface $storage
