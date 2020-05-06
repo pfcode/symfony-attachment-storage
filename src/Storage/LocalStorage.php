@@ -140,15 +140,16 @@ class LocalStorage implements StorageInterface
      */
     public function hasAttachment(AttachmentInterface $attachment): bool {
         $fileName = $this->getAttachmentFileName($attachment);
-        return file_exists("{$this->absolutePath}/$fileName");
+        return file_exists("{$this->absolutePath}/{$fileName}");
     }
 
     /**
      * @param AttachmentInterface $attachment
      */
     public function removeAttachment(AttachmentInterface $attachment): void {
-        if ($this->hasAttachment($attachment)) {
-            unlink($this->getAttachmentFileName($attachment));
+        $fileName = $this->getAttachmentFileName($attachment);
+        if ($fileName !== null && $this->hasAttachment($attachment)) {
+            unlink("{$this->absolutePath}/{$fileName}");
         }
     }
 
